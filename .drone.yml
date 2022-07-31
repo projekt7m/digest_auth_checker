@@ -1,0 +1,20 @@
+kind: pipeline
+name: default
+
+steps:
+- name: test
+  image: rust:1.61
+  commands:
+  - cargo test
+- name: lint
+  image: rust:1.61
+  commands:
+  - rustup default stable
+  - rustup component add clippy-preview
+  - rustup component add rustfmt
+  - cargo fmt -- --check
+  - cargo clippy
+- name: build
+  image: rust:1.61
+  commands:
+  - cargo build --release
